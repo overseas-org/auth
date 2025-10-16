@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+  labels:
+    app: auth
+    service: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+      service: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+        service: auth
+    spec:
+      volumes:
+      - name: auth-volume
+        persistentVolumeClaim:
+          claimName: auth
+      containers:
+      - name: auth-container
+        image: hhana982/auth:1.<version>
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - mountPath: "/"
+          name: auth-volume
+        env: 
