@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-db
+  labels:
+    app: auth-db
+    service: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-db
+      service: auth
+  template:
+    metadata:
+      labels:
+        app: auth-db
+        service: auth
+    spec:
+      volumes:
+      - name: auth-db-volume
+        persistentVolumeClaim:
+          claimName: auth-db
+      containers:
+      - name: auth-db-container
+        image: redis
+        ports:
+        - containerPort: None
+        volumeMounts:
+        - mountPath: "/var/lib/mysql"
+          name: auth-db-volume
+        env: 
