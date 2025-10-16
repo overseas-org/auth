@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-db
+  labels:
+    app: auth-db
+    service: auth
+spec:
+  selector:
+    app: auth-db
+    service: auth
+  ports:
+    - protocol: TCP
+      port: None
+      targetPort: None
+  type: ClusterIP
