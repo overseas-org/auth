@@ -1,2 +1,6 @@
 flask
 pytest
+flask-cors
+PyJWT[crypto]
+requests
+redis

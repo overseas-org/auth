@@ -18,15 +18,27 @@ spec:
         service: auth
     spec:
       volumes:
-      - name: auth-volume
-        persistentVolumeClaim:
-          claimName: auth
+      - name: certs-secret
+        secret:
+          secretName: auth-certs-secret
       containers:
       - name: auth-container
-        image: hhana982/auth:1.<version>
+        image: hhana982/auth:dev
         ports:
         - containerPort: 5000
         volumeMounts:
-        - mountPath: "/"
-          name: auth-volume
+        - name: certs-secret
+          mountPath: /etc/secret
         env: 
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: auth-certs-secret
+              key: SECRET_KEY
+        - name: REFRESH_KEY
+          valueFrom:
+            secretKeyRef:
+              name: auth-certs-secret
+              key: REFRESH_KEY
+        - name: SECRET_KEYS_PATH
+          value: "/etc/secret"

@@ -11,6 +11,6 @@ spec:
     service: auth
   ports:
     - protocol: TCP
-      port: None
-      targetPort: None
+      port: 6379
+      targetPort: 6379
   type: ClusterIP

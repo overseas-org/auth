@@ -1,6 +1,6 @@
 import redis
 
-r = redis.Redis(host='localhost', port=6379)
+r = redis.Redis(host='auth-db', port=6379)
 
 def append_token(token: str):
     r.lpush("refreshTokens", token)
