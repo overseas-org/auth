@@ -22,9 +22,17 @@ openssl genrsa -out $CERT_PATH/private.pem 2048
 # Extract Public Key
 openssl rsa -in $CERT_PATH/private.pem -pubout -out $CERT_PATH/public.pem
 
-kubectl create secret generic auth-certs-secret \
+
+output=$(kubectl create secret generic auth-certs-secret \
   --from-file=$CERT_PATH/private.pem \
   --from-file=$CERT_PATH/public.pem \
   --from-literal=SECRET_KEY=$(openssl rand -hex 64) \
   --from-literal=REFRESH_KEY=$(openssl rand -hex 64) \
-  -n overseas
+  -n overseas 2>&1)
+if [ $? -ne 0 ];then
+  echo " here"
+  echo "$output"
+  if echo "$output" | grep -q "already exists"; then
+      exit 0
+  fi
+fi
