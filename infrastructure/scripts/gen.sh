@@ -30,7 +30,6 @@ output=$(kubectl create secret generic auth-certs-secret \
   --from-literal=REFRESH_KEY=$(openssl rand -hex 64) \
   -n overseas 2>&1)
 if [ $? -ne 0 ];then
-  echo " here"
   echo "$output"
   if echo "$output" | grep -q "already exists"; then
       exit 0
