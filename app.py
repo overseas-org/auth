@@ -5,10 +5,10 @@ from actions import login_user, logout_user, sinup_user, verify_token, refresh_t
 app = Flask(__name__)
 
 CORS(app, supports_credentials=True)
-bp = Blueprint('connetion', __name__,
+bp = Blueprint('auth', __name__,
                         template_folder='templates')
 
-app.register_blueprint(bp, url_prefix="/api/connection")
+app.register_blueprint(bp, url_prefix="/api/auth")
 
 @app.route("/login", methods=["POST"])
 def login():
