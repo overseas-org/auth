@@ -66,7 +66,8 @@ def signup():
 		return jsonify(tokens), 200
 	except Exception as e:
 		return jsonify(str(e)), 500
+	
+app.register_blueprint(bp, url_prefix="/api/auth")
 
 if __name__ == "__main__":
-	app.register_blueprint(bp, url_prefix="/api/auth")
 	app.run(host="0.0.0.0", debug=True)
