@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Blueprint
 from flask_cors import CORS
 from actions import login_user, logout_user, sinup_user, verify_token, refresh_token
 
@@ -6,9 +6,13 @@ app = Flask(__name__)
 
 CORS(app, supports_credentials=True)
 
-app.config["APPLICATION_ROOT"] = "/api/auth"
+# app.config["APPLICATION_ROOT"] = "/abc/123"
 
-@app.route("/login", methods=["POST"])
+bp = Blueprint('auth', __name__,
+                        template_folder='templates')
+
+
+@bp.route("/login", methods=["POST"])
 def login():
 	data = request.json
 	user = data["user"]
@@ -21,7 +25,7 @@ def login():
 		return jsonify(str(e)), 401
 	
 
-@app.route("/logout", methods=["POST"])
+@bp.route("/logout", methods=["POST"])
 def logout():
 	data = request.json
 	token = data["token"]
@@ -31,7 +35,7 @@ def logout():
 		return str(e), 400
 	return "", 200
 
-@app.route("/verify", methods=["POST"])
+@bp.route("/verify", methods=["POST"])
 def verify():
 	data = request.json
 	token = data["token"]
@@ -43,7 +47,7 @@ def verify():
 	except Exception as e:
 		return jsonify(str(e)), 403
 	
-@app.route("/refresh", methods=["POST"])
+@bp.route("/refresh", methods=["POST"])
 def refresh():
 	data = request.json
 	token = data["token"]
@@ -53,7 +57,7 @@ def refresh():
 	except Exception as e:
 		return jsonify(str(e)), 400
 
-@app.route("/signup", methods=["POST"])
+@bp.route("/signup", methods=["POST"])
 def signup():
 	data = request.json
 	user = data["user"]
@@ -64,4 +68,5 @@ def signup():
 		return jsonify(str(e)), 500
 
 if __name__ == "__main__":
+	app.register_blueprint(bp, url_prefix="/api/auth")
 	app.run(host="0.0.0.0", debug=True)
