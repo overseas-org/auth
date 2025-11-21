@@ -1,14 +1,12 @@
-from flask import Flask, request, jsonify, Blueprint
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from actions import login_user, logout_user, sinup_user, verify_token, refresh_token
 
 app = Flask(__name__)
 
 CORS(app, supports_credentials=True)
-bp = Blueprint('auth', __name__,
-                        template_folder='templates')
 
-app.register_blueprint(bp, url_prefix="/api/auth")
+app.config["APPLICATION_ROOT"] = "/api/auth"
 
 @app.route("/login", methods=["POST"])
 def login():
