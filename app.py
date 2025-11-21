@@ -5,6 +5,8 @@ from actions import login_user, logout_user, sinup_user, verify_token, refresh_t
 app = Flask(__name__)
 
 CORS(app, supports_credentials=True)
+app.config["APPLICATION_ROOT"] = "/api/connection"
+
 
 @app.route("/login", methods=["POST"])
 def login():
