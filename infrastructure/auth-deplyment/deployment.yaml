@@ -23,7 +23,7 @@ spec:
           secretName: auth-certs-secret
       containers:
       - name: auth-container
-        image: hhana982/auth:dev
+        image: hhana982/auth:1.<version>
         ports:
         - containerPort: 5000
         volumeMounts:
