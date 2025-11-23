@@ -6,70 +6,66 @@ app = Flask(__name__)
 
 CORS(app, supports_credentials=True)
 
-
+# app.config["APPLICATION_ROOT"] = "/abc/123"
 
 bp = Blueprint('auth', __name__,
                         template_folder='templates')
 
-@bp.route("/test", methods=["GET"])
+
+@bp.route("/login", methods=["POST"])
 def login():
-	return jsonify("here is reply"), 200
-
-
-# @bp.route("/login", methods=["POST"])
-# def login():
-# 	data = request.json
-# 	user = data["user"]
-# 	if user["username"] == "" or (("sso_verified" not in user or not user["sso_verified"]) and ("encrypted_password" not in user or user["encrypted_password"] == "")):
-# 		return jsonify("missing credentials"), 400
-# 	try:
-# 		tokens = login_user(user)
-# 		return jsonify(tokens), 200
-# 	except Exception as e:
-# 		return jsonify(str(e)), 401
+	data = request.json
+	user = data["user"]
+	if user["username"] == "" or (("sso_verified" not in user or not user["sso_verified"]) and ("encrypted_password" not in user or user["encrypted_password"] == "")):
+		return jsonify("missing credentials"), 400
+	try:
+		tokens = login_user(user)
+		return jsonify(tokens), 200
+	except Exception as e:
+		return jsonify(str(e)), 401
 	
 
-# @bp.route("/logout", methods=["POST"])
-# def logout():
-# 	data = request.json
-# 	token = data["token"]
-# 	try:
-# 		logout_user(token)
-# 	except Exception as e:
-# 		return str(e), 400
-# 	return "", 200
+@bp.route("/logout", methods=["POST"])
+def logout():
+	data = request.json
+	token = data["token"]
+	try:
+		logout_user(token)
+	except Exception as e:
+		return str(e), 400
+	return "", 200
 
-# @bp.route("/verify", methods=["POST"])
-# def verify():
-# 	data = request.json
-# 	token = data["token"]
-# 	try:
-# 		if verify_token(token):
-# 			return "", 200
-# 		else:
-# 			return "invalid token", 403
-# 	except Exception as e:
-# 		return jsonify(str(e)), 403
+@bp.route("/verify", methods=["POST"])
+def verify():
+	data = request.json
+	token = data["token"]
+	try:
+		if verify_token(token):
+			return "", 200
+		else:
+			return "invalid token", 403
+	except Exception as e:
+		return jsonify(str(e)), 403
 	
-# @bp.route("/refresh", methods=["POST"])
-# def refresh():
-# 	data = request.json
-# 	token = data["token"]
-# 	try:
-# 		tokens = refresh_token(token)
-# 		return jsonify(tokens), 200
-# 	except Exception as e:
-# 		return jsonify(str(e)), 400
+@bp.route("/refresh", methods=["POST"])
+def refresh():
+	data = request.json
+	token = data["token"]
+	try:
+		tokens = refresh_token(token)
+		return jsonify(tokens), 200
+	except Exception as e:
+		return jsonify(str(e)), 400
 
-# @bp.route("/signup", methods=["POST"])
-# def signup():
-# 	data = request.json
-# 	user = data["user"]
-# 	try:
-# 		tokens = sinup_user(user)
-# 		return jsonify(tokens), 200
-# 	except Exception as e:
-# 		return jsonify(str(e)), 500
+@bp.route("/signup", methods=["POST"])
+def signup():
+	data = request.json
+	user = data["user"]
+	try:
+		tokens = sinup_user(user)
+		return jsonify(tokens), 200
+	except Exception as e:
+		return jsonify(str(e)), 500
 	
 app.register_blueprint(bp, url_prefix="/api/auth")
 
