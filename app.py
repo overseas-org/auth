@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 CORS(app, supports_credentials=True)
 
-app.config["APPLICATION_ROOT"] = "/abc/123"
+app.config["APPLICATION_ROOT"] = "/api/auth"
 
 # bp = Blueprint('auth', __name__,
 #                         template_folder='templates')
