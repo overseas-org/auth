@@ -17,6 +17,7 @@ spec:
         app: auth
         service: auth
     spec:
+      serviceAccount: auth
       volumes:
       - name: certs-secret
         secret:
