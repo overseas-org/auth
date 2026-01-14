@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, Blueprint
 from flask_cors import CORS
 from actions import login_user, logout_user, sinup_user, verify_token, refresh_token
+from neibhors.account import check_if_account_exists
 
 app = Flask(__name__)
 
@@ -64,6 +65,12 @@ def signup():
 		return jsonify(tokens), 200
 	except Exception as e:
 		return jsonify(str(e)), 500
+	
+@bp.route("/account_exists", methods=["GET"])
+def account_exists():
+	account = request.args.get("account")
+	return check_if_account_exists(account)
+
 	
 app.register_blueprint(bp, url_prefix="/api/auth")
 

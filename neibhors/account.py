@@ -26,7 +26,11 @@ def create_account(account_name):
 def get_account_by_name(account_name):
     response = requests.get(f"{account}/account_by_name", json={"account": account_name})
     if response.status_code != 200:
-        raise Exception(f"response.text")
+        raise Exception(response.text)
     else:
         data = response.json()
         return data["id"]
+    
+def check_if_account_exists(account_name):
+    response = requests.get(f"{account}/account_exists", json={"account": account_name})
+    return response.text, response.status_code
